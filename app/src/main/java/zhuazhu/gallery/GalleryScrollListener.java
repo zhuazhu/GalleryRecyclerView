@@ -17,7 +17,7 @@ public class GalleryScrollListener extends RecyclerView.OnScrollListener {
     /**
      * 缩放因子
      */
-    private float mAnimFactor = 0.13f;
+    private float mAnimFactor = 0.25f;
     private static final int SLIDE_LEFT = 1;
     private static final int SLIDE_RIGHT = 2;
     private GalleryItemDecoration mGalleryItemDecoration;
@@ -43,19 +43,9 @@ public class GalleryScrollListener extends RecyclerView.OnScrollListener {
                 //item的宽度
                 int itemWidth = mGalleryItemDecoration.getItemWidth();
                 LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-                //当前第一个显示item的position
-                int itemPosition = layoutManager.findFirstVisibleItemPosition();
-                Log.d(TAG,String.format("第一个显示的position->%d",itemPosition));
                 float offset = (float) mConstomX/(float)itemWidth;
                 float precent = offset-(int)offset;
-                int position = Math.round(offset);
-                if(position!=0){
-                    position = itemPosition+1;
-                }
-                if(offset>=(itemPosition+1)&&mSlideDirect==SLIDE_LEFT){
-                    return;
-                }
-                startAnimation(layoutManager,position,precent);
+                startAnimation(layoutManager,(int)offset,precent);
             }
         });
     }
@@ -64,8 +54,8 @@ public class GalleryScrollListener extends RecyclerView.OnScrollListener {
         View leftView = layoutManager.findViewByPosition(position-1);
         View centerView = layoutManager.findViewByPosition(position);
         View rightView = layoutManager.findViewByPosition(position+1);
+        View rightView1 = layoutManager.findViewByPosition(position+2);
 
-        if(precent<=0.5f){
             if (leftView!=null) {
                 //放大
                 leftView.setScaleX((1-mAnimFactor)+mAnimFactor*precent);
@@ -81,22 +71,10 @@ public class GalleryScrollListener extends RecyclerView.OnScrollListener {
                 rightView.setScaleX((1-mAnimFactor)+mAnimFactor*precent);
                 rightView.setScaleY((1-mAnimFactor)+mAnimFactor*precent);
             }
-        }else{
-            if (leftView!=null) {
+            if (rightView1!=null) {
                 //缩小
-                leftView.setScaleX(1-mAnimFactor*precent);
-                leftView.setScaleY(1-mAnimFactor*precent);
+                rightView1.setScaleX(1-mAnimFactor*precent);
+                rightView1.setScaleY(1-mAnimFactor*precent);
             }
-            if (centerView!=null) {
-                //方法
-                centerView.setScaleX((1-mAnimFactor)+mAnimFactor*precent);
-                centerView.setScaleY((1-mAnimFactor)+mAnimFactor*precent);
-            }
-            if (rightView!=null) {
-                //缩小
-                rightView.setScaleX(1-mAnimFactor*precent);
-                rightView.setScaleY(1-mAnimFactor*precent);
-            }
-        }
     }
 }

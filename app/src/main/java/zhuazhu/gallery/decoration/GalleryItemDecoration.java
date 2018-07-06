@@ -9,8 +9,8 @@ import android.view.View;
  * @author zhuazhu
  **/
 public class GalleryItemDecoration extends RecyclerView.ItemDecoration {
-    private int mPageMargin = 5;
-    private int mPageVisibleWidth = 30;
+    private int mPageMargin = 0;
+    private int mPageVisibleWidth = 50;
     private int mItemWidth;
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
